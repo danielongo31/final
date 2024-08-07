@@ -1,14 +1,12 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-import CursoEntity from "../../curso/entity/Curso.entity";
-import PuntosEntity from "../../puntos/entity/Puntos.entity";
-
+import CursoEntity from "src/curso/entity/Curso.entity";
+import PuntosEntity from "src/puntos/entity/Puntos.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
-    name : 'Miembro'
+    name: 'miembros'
 })
-export default class MiembroEntity
-{
-    
+export default class MiembroEntity {
+
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -35,9 +33,10 @@ export default class MiembroEntity
     @Column()
     direccion: string;
 
+    @OneToMany(() => PuntosEntity, (puntos) => puntos.miembro)
+    puntos: PuntosEntity[];
+
     @OneToMany(() => CursoEntity, (curso) => curso.miembro)
     cursos: CursoEntity[];
 
-    @ManyToOne(() => PuntosEntity, (puntos) => puntos.miembro)
-    puntos: PuntosEntity
-};
+}

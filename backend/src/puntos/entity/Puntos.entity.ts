@@ -1,12 +1,11 @@
 import MiembroEntity from "src/miembro/entity/Miembro.entity";
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
-    name: 'Puntos'
+    name: 'puntos'
 })
-export default class PuntosEntity
-{
-    
+export default class PuntosEntity {
+
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -14,9 +13,9 @@ export default class PuntosEntity
     cantidad: number;
 
     @Column()
-    tipo: string
+    tipo: string;
 
-    @OneToMany (() => MiembroEntity, (miembro) => miembro.puntos)
-    miembro: MiembroEntity[];
-    
+    @ManyToOne(() => MiembroEntity, (miembro) => miembro.puntos)
+    miembro: MiembroEntity;
+
 };
