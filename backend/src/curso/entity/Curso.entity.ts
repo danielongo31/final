@@ -1,6 +1,6 @@
 import ActividadesEntity from "src/actividades/entity/Actividades.entity";
 import MiembroEntity from "src/miembro/entity/Miembro.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
     name: 'cursos'
@@ -13,10 +13,10 @@ export default class CursoEntity {
     @Column()
     nombre: string;
 
-    @ManyToOne(() => ActividadesEntity, (actividad) => actividad.cursos)
-    actividad: ActividadesEntity;
+    @OneToMany(() => ActividadesEntity, (actividad) => actividad.curso)
+    actividades: ActividadesEntity[];
 
-    @ManyToOne(() => MiembroEntity, (miembro) => miembro.cursos)
-    miembro: MiembroEntity;
+    @OneToMany(() => MiembroEntity, (miembro) => miembro.curso)
+    miembros: MiembroEntity[];
 
 };

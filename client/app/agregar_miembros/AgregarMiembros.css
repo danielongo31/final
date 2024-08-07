@@ -1,21 +1,10 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html, body {
-    width: 100%;
-    min-height: 100%;
-    height: auto;
-}
 
 .container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-image: url('/images/fondo-iglesia.jpg'); 
+    background-image: url('/images/fondo-iglesia-1.jpg'); 
     background-size: cover; 
     background-position: center; 
     background-repeat: no-repeat; 
@@ -58,13 +47,6 @@ html, body {
 }
 
 .form-control {
-    width: 100%;
-    padding: 0.5rem;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-}
-
-.select {
     width: 100%;
     padding: 0.5rem;
     border-radius: 4px;

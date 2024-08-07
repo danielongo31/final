@@ -5,9 +5,10 @@ export default function Sidebar() {
     return (
         <AppBar
             position="static"
+            color="success"
         >
             <Container
-                maxWidth="xl"
+                maxWidth="x1"
             >
                 <Toolbar
                     disableGutters
@@ -20,7 +21,29 @@ export default function Sidebar() {
                             <Typography
                                 color={"white"}
                             >
-                                Jovenes
+                                Inicio
+                            </Typography>
+                        </Button>
+
+                        <Button
+                            LinkComponent={Link}
+                            href="/agregar_miembros"
+                        >
+                            <Typography
+                                color={"white"}
+                            >
+                                Agregar miembros
+                            </Typography>
+                        </Button>
+
+                        <Button
+                            LinkComponent={Link}
+                            href="/agregar_puntos"
+                        >
+                            <Typography
+                                color={"white"}
+                            >
+                                Agregar puntos
                             </Typography>
                         </Button>
 
@@ -32,6 +55,17 @@ export default function Sidebar() {
                                 color={"white"}
                             >
                                 Actividades
+                            </Typography>
+                        </Button>
+
+                        <Button
+                            LinkComponent={Link}
+                            href="/directorio"
+                        >
+                            <Typography
+                                color={"white"}
+                            >
+                                Directorio
                             </Typography>
                         </Button>
                     </Box>
