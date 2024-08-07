@@ -1,10 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
-import { UserService } from '../user.service';
+import { MiembroService } from '../miembro.service';
 
-@Controller('/user')
-export class UserController {
 
-    constructor (private readonly service : UserService) {}
+@Controller('/miembro')
+export class MiembroController {
+
+    constructor (private readonly service : MiembroService) {}
 
     @Get()
     async getAll() {
@@ -19,15 +20,15 @@ export class UserController {
     }
 
     @Post()
-    async create(@Body() user: Object) {
-        const resultado = await this.service.create(user);
+    async create(@Body() miembro: Object) {
+        const resultado = await this.service.create(miembro);
 
         return resultado;
     }
 
     @Patch('/:id')
-    async update(@Param('id') id: number, @Body() user: Object) {
-        const resultado = await this.service.update(id, user);
+    async update(@Param('id') id: number, @Body() miembro: Object) {
+        const resultado = await this.service.update(id, miembro);
 
         return resultado;
     }
