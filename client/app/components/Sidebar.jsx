@@ -49,12 +49,12 @@ export default function Sidebar() {
 
                         <Button
                             LinkComponent={Link}
-                            href="/actividades"
+                            href="/cursos"
                         >
                             <Typography
                                 color={"white"}
                             >
-                                Actividades
+                                Cursos
                             </Typography>
                         </Button>
 
