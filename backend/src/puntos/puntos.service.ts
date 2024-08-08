@@ -15,11 +15,28 @@ export class PuntosService {
         return await this.repository.find();
     }
 
+    async getById(id: number) {
+        const resultado = await this.repository.findOneBy({ id: id });
+
+        return resultado;
+    }
+
+    async create(puntos: Object) {
+        const resultado = await this.repository.save(puntos);
+
+        return resultado;
+    }
+
     async update(id: number, puntos: Object) {
         await this.repository.update(id, puntos);
 
         return true;
     }
 
+    async delete(id: number) {
+        await this.repository.delete(id);
+
+        return true;
+    }
 
 };

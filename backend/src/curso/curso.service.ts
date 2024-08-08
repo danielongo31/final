@@ -11,4 +11,32 @@ export class CursoService {
         @InjectRepository(CursoEntity) private readonly repository : Repository<CursoEntity>
     ) { }
 
+    async getAll() {
+        return await this.repository.find();
+    }
+
+    async getById(id: number) {
+        const resultado = await this.repository.findOneBy({ id: id });
+
+        return resultado;
+    }
+
+    async create(curso: Object) {
+        const resultado = await this.repository.save(curso);
+
+        return resultado;
+    }
+
+    async update(id: number, curso: Object) {
+        await this.repository.update(id, curso);
+
+        return true;
+    }
+
+    async delete(id: number) {
+        await this.repository.delete(id);
+
+        return true;
+    }
+
 };

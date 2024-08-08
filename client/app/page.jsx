@@ -1,60 +1,59 @@
 'use client';
 
-import { Container } from "@mui/material";
-import { DataGrid } from '@mui/x-data-grid';
+import { Box, Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Stack, Typography } from "@mui/material";
+import Link from "next/link";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-export default function Home() {
-
-  const [users, setUsers] = useState([]);
+export default function CursosPage() {
+  const [cursos, setCursos] = useState([]);
 
   useEffect(() => {
-    const getUsers = async () => {
-      const { success, result } = (await axios.get('/api/user/getAll')).data;
-      
-      if (success) setUsers(result);
-      
-    };
+      const getCursos = async () => {
+          const { success, result } = (await axios.get('/api/curso/getAll')).data;
 
-    getUsers();
+          if (success) setCursos(result)
+      };
+
+      getCursos();
   }, []);
+
 
   return (
     <Container
-      maxWidth="xl"
+    maxWidth="xl"
+    sx={{
+        padding: '30px'
+    }}
+>
+    <Stack
+        direction={'row'}
+        gap={2}
     >
-      <DataGrid
-        rows={users}
-        columns={[
-          {
-            field: 'id',
-            headerName: 'ID'
-          },
-          {
-            field: 'dni',
-            headerName: 'DNI',
-            width: 100
-          },
-          {
-            field: 'firstname',
-            headerName: 'Nombre',
-            width: 150
-          },
-          {
-            field: 'lastname',
-            headerName: 'Apellido',
-            width: 150
-          }
-        ]}
-        initialState={{
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
-        }}
-        pageSizeOptions={[5, 10]}
-        checkboxSelection
-      />
-    </Container>
+        {
+            cursos.map(curso => (
+                <Card
+                    variant="outlined"
+                >
+                    <CardActionArea
+                        component={Link}
+                        href={`/cursos/${curso.id}`}
+                    >
+                        <CardMedia
+                            component="img"
+                            height="125"
+                            image="https://vilmanunez.com/wp-content/uploads/2016/03/herramientas-y-recursos-para-crear-curso-online.png"
+                            alt="green iguana"
+                        />
+
+                        <CardContent>
+                            <Typography>{curso.nombre}</Typography>
+                        </CardContent>
+                    </CardActionArea>
+                </Card>
+            ))
+        }
+    </Stack>
+</Container>
   );
 }

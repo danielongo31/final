@@ -38,17 +38,6 @@ export default function Sidebar() {
 
                         <Button
                             LinkComponent={Link}
-                            href="/agregar_puntos"
-                        >
-                            <Typography
-                                color={"white"}
-                            >
-                                Agregar puntos
-                            </Typography>
-                        </Button>
-
-                        <Button
-                            LinkComponent={Link}
                             href="/cursos"
                         >
                             <Typography

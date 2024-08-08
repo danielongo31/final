@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import MiembroEntity from './entity/Miembro.entity';
+import CursoEntity from 'src/curso/entity/Curso.entity';
 
 @Injectable()
 export class MiembroService {
@@ -16,6 +17,15 @@ export class MiembroService {
 
     async getById(id: number) {
         const resultado = await this.repository.findOneBy({ id: id });
+
+        return resultado;
+    }
+
+    async getByCurso(cursoid: number){
+        const curso = new CursoEntity();
+        curso.id = cursoid;
+
+        const resultado = await this.repository.findBy({ curso: curso})
 
         return resultado;
     }

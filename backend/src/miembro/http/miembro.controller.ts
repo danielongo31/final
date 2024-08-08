@@ -19,6 +19,13 @@ export class MiembroController {
         return resultado;
     }
 
+    @Get('/curso/:cursoid')
+    async getByCurso(@Param('cursoid') cursoid: number){
+        const resultado = await this.service.getByCurso(cursoid)
+
+        return resultado;
+    }
+
     @Post()
     async create(@Body() miembro: Object) {
         const resultado = await this.service.create(miembro);

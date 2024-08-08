@@ -1,31 +1,41 @@
 'use client';
 
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import { Container } from "@mui/material";
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import axios from "axios";
+import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 
 export default function Home() {
+  const router = useRouter();
 
-  const [users, setUsers] = useState([]);
+  const [miembros, setMiembros] = useState([]);
 
   useEffect(() => {
-    const getUsers = async () => {
-      const { success, result } = (await axios.get('/api/user/getAll')).data;
+    const getMiembros = async () => {
+      const { success, result } = (await axios.get('/api/miembro/getAll')).data;
       
-      if (success) setUsers(result);
+      if (success) setMiembros(result);
       
     };
 
-    getUsers();
+    getMiembros();
   }, []);
+
+  const deleteMiembro = async(id) => {
+    const { success, result} = (await axios.delete(`/api/miembro/delete/${id}`)).data;
+
+    if (success)window.location.reload();
+  };
 
   return (
     <Container
       maxWidth="xl"
     >
       <DataGrid
-        rows={users}
+        rows={miembros}
         columns={[
           {
             field: 'id',
@@ -56,6 +66,30 @@ export default function Home() {
             headerName: 'Direccion',
             width: 200
           },
+          {
+            field: 'Actions',
+            headerName: 'Acciones',
+            width: 100,
+            type: 'actions',
+            getActions: ({ id }) => {
+              
+              return [
+                <GridActionsCellItem
+                  icon={<EditRoundedIcon />}
+                  label="Edit"
+                  className="textPrimary"
+                  onClick={''}
+                  color="inherit"
+                />,
+                <GridActionsCellItem
+                  icon={<DeleteRoundedIcon />}
+                  label="Delete"
+                  onClick={() => deleteMiembro(id)}
+                  color="inherit"
+                />,
+              ];
+            }
+          }
         ]}
         initialState={{
           pagination: {
