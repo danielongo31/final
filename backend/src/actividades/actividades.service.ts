@@ -38,7 +38,7 @@ export class ActividadesService {
         return resultado;
     }
 
-    async update(id: number, actividad: object){
+    async update(id: number, actividad: Object){
         await this.repository.update(id, actividad);
 
         return true;

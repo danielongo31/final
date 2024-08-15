@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import PuntosEntity from './entity/Puntos.entity';
+import MiembroEntity from 'src/miembro/entity/Miembro.entity';
 
 
 @Injectable()
@@ -19,6 +20,14 @@ export class PuntosService {
         const resultado = await this.repository.findOneBy({ id: id });
 
         return resultado;
+    }
+
+    async getByMiembro(miembroid: number){
+        // const miembro = new MiembroEntity();
+        // miembro.id = miembroid;
+        // const resultado = await this.repository.findBy({ miembro });
+
+        // return resultado;
     }
 
     async create(puntos: Object) {

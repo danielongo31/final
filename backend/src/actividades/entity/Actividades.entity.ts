@@ -12,6 +12,9 @@ export default class ActividadesEntity {
     @Column()
     descripcion: string;
 
+    @Column()
+    fecha: Date;
+
     @ManyToOne(() => CursoEntity, (curso) => curso.actividades)
     curso: CursoEntity;
 

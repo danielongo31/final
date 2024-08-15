@@ -1,24 +1,27 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import Link from "next/link";
 
-export default function CursoLayout({children}){
+export default function CursoLayout({ children, params }) {
+    
+    const { cursoid } = params;
+
     return (
         <div>
-            <Box padding="15px" >
+            <Box padding="15px" bgcolor={"#40c15e"}>
                 <Stack direction="row">
-                    <Button 
-                      component={Link}
-                      href="/cursos/1"
+                    <Button
+                        component={Link}
+                        href={`/cursos/${cursoid}`}
                     >
-                        <Typography>
+                        <Typography color={"white"}>
                             Actividades
                         </Typography>
                     </Button>
-                    <Button 
-                      component={Link}
-                      href="/cursos/1/miembros"
+                    <Button
+                        component={Link}
+                        href={`/cursos/${cursoid}/miembros`}
                     >
-                        <Typography>
+                        <Typography color={"white"}>
                             Miembros
                         </Typography>
                     </Button>

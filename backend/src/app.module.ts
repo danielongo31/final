@@ -8,6 +8,10 @@ import ActividadesEntity from './actividades/entity/Actividades.entity';
 import CursoEntity from './curso/entity/Curso.entity';
 import MiembroEntity from './miembro/entity/Miembro.entity';
 import PuntosEntity from './puntos/entity/Puntos.entity';
+import RolEntity from './rol/entity/Rol.entity';
+import { RolModule } from './rol/rol.module';
+import UserEntity from './user/entity/User.Entity';
+import { UserModule } from './user/user.module';
 
 
 @Module({
@@ -26,6 +30,8 @@ import PuntosEntity from './puntos/entity/Puntos.entity';
         CursoEntity,
         MiembroEntity,
         PuntosEntity,
+        RolEntity,
+        UserEntity,
       ],
       charset: 'utf8_general_ci',
       autoLoadEntities: true
@@ -33,7 +39,9 @@ import PuntosEntity from './puntos/entity/Puntos.entity';
     MiembroModule,
     ActividadesModule,
     PuntosModule,
-    CursoModule
+    CursoModule,
+    RolModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],

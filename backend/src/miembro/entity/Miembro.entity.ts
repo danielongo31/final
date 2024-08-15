@@ -1,6 +1,7 @@
 import CursoEntity from "src/curso/entity/Curso.entity";
 import PuntosEntity from "src/puntos/entity/Puntos.entity";
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import RolEntity from "src/rol/entity/Rol.entity";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, RelationId } from "typeorm";
 
 @Entity({
     name: 'miembros'
@@ -33,10 +34,21 @@ export default class MiembroEntity {
     @Column()
     direccion: string;
 
-    @OneToMany(() => PuntosEntity, (puntos) => puntos.miembro)
-    puntos: PuntosEntity[];
-
     @ManyToOne(() => CursoEntity, (curso) => curso.miembros)
     curso: CursoEntity;
+
+    @ManyToOne(() => RolEntity, (rol) => rol.miembros)
+    rol: RolEntity;
+
+    @OneToOne(() => PuntosEntity, {
+        cascade: true,
+    })
+    @JoinColumn()
+    puntos: PuntosEntity;
+
+    @RelationId((miembro: MiembroEntity) => miembro.puntos)
+    puntosid: number;
+    
+
 
 }

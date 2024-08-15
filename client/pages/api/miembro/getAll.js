@@ -13,7 +13,7 @@ export default async function handler(req, res) {
         } catch (error) {
             res.status(500).json({
                 success: false,
-                result: 'Error al encontrar el miembro'
+                result: 'Error al encontrar los miembro'
             });
         }
     }

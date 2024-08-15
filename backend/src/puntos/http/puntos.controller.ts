@@ -7,9 +7,21 @@ export class PuntosController {
 
     constructor (private readonly service : PuntosService) {}
 
+    @Get()
+    async getAll() {
+        return await this.service.getAll();
+    }
+
     @Get('/:id')
     async getById(@Param('id') id: number) {
         const resultado = await this.service.getById(id);
+
+        return resultado;
+    }
+
+    @Get('/miembro/:miembroid')
+    async getByMiembro(@Param('miembroid') miembroid: number){
+        const resultado = await this.service.getByMiembro(miembroid)
 
         return resultado;
     }

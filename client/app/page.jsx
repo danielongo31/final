@@ -4,6 +4,7 @@ import { Box, Card, CardActionArea, CardActions, CardContent, CardMedia, Contain
 import Link from "next/link";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useAuth } from "./hooks/useAuth";
 
 export default function CursosPage() {
   const [cursos, setCursos] = useState([]);

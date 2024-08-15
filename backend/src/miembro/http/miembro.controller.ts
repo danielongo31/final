@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { MiembroService } from '../miembro.service';
+import MiembroEntity from '../entity/Miembro.entity';
 
 
 @Controller('/miembro')
@@ -27,7 +28,7 @@ export class MiembroController {
     }
 
     @Post()
-    async create(@Body() miembro: Object) {
+    async create(@Body() miembro: MiembroEntity) {
         const resultado = await this.service.create(miembro);
 
         return resultado;

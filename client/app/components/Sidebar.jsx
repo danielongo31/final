@@ -1,11 +1,18 @@
 import { AppBar, Box, Button, Container, Toolbar, Typography } from "@mui/material";
 import Link from "next/link";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Sidebar() {
+
+    const { logout } = useAuth();
+
     return (
         <AppBar
             position="static"
-            color="success"
+            sx={{
+                backgroundColor: "#28a745",
+                borderBottom: "1px solid white"
+            }}
         >
             <Container
                 maxWidth="x1"
@@ -35,18 +42,6 @@ export default function Sidebar() {
                                 Agregar miembros
                             </Typography>
                         </Button>
-
-                        <Button
-                            LinkComponent={Link}
-                            href="/cursos"
-                        >
-                            <Typography
-                                color={"white"}
-                            >
-                                Cursos
-                            </Typography>
-                        </Button>
-
                         <Button
                             LinkComponent={Link}
                             href="/directorio"
@@ -55,6 +50,15 @@ export default function Sidebar() {
                                 color={"white"}
                             >
                                 Directorio
+                            </Typography>
+                        </Button>
+                        <Button
+                            onClick={logout}
+                        >
+                            <Typography
+                                color={"white"}
+                            >
+                                Cerrar sesión
                             </Typography>
                         </Button>
                     </Box>

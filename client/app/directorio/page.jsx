@@ -5,6 +5,7 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import { Container } from "@mui/material";
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import axios from "axios";
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 
@@ -16,18 +17,18 @@ export default function Home() {
   useEffect(() => {
     const getMiembros = async () => {
       const { success, result } = (await axios.get('/api/miembro/getAll')).data;
-      
+
       if (success) setMiembros(result);
-      
+
     };
 
     getMiembros();
   }, []);
 
-  const deleteMiembro = async(id) => {
-    const { success, result} = (await axios.delete(`/api/miembro/delete/${id}`)).data;
+  const deleteMiembro = async (id) => {
+    const { success, result } = (await axios.delete(`/api/miembro/delete/${id}`)).data;
 
-    if (success)window.location.reload();
+    if (success) window.location.reload();
   };
 
   return (
@@ -72,13 +73,13 @@ export default function Home() {
             width: 100,
             type: 'actions',
             getActions: ({ id }) => {
-              
+
               return [
                 <GridActionsCellItem
                   icon={<EditRoundedIcon />}
                   label="Edit"
                   className="textPrimary"
-                  onClick={''}
+                  href={`/directorio/${id}`}
                   color="inherit"
                 />,
                 <GridActionsCellItem
@@ -99,6 +100,10 @@ export default function Home() {
         pageSizeOptions={[5, 10]}
         checkboxSelection
       />
+      <Link href={`/agregar_miembros`} className="button" style={{
+        display: "block",
+        float: "left"
+      }}>Agregar miembro</Link>
     </Container>
   );
 }
