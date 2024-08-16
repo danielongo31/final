@@ -82,7 +82,7 @@ export default function AgregarMiembros({
                             <select className="select" onChange={(e) => setRol(e.currentTarget.value)}>
                                 <option>Selecciona una opción</option>
                                 {
-                                    roles.map(rol => <option value={rol.id}>
+                                    roles.map((rol, key) => <option value={rol.id} key={key}>
                                         {rol.nombre}
                                     </option>)
                                 }

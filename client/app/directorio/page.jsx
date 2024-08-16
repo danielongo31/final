@@ -75,14 +75,14 @@ export default function Home() {
             getActions: ({ id }) => {
 
               return [
-                <GridActionsCellItem
+                <GridActionsCellItem key={1}
                   icon={<EditRoundedIcon />}
                   label="Edit"
                   className="textPrimary"
                   href={`/directorio/${id}`}
                   color="inherit"
                 />,
-                <GridActionsCellItem
+                <GridActionsCellItem key={2}
                   icon={<DeleteRoundedIcon />}
                   label="Delete"
                   onClick={() => deleteMiembro(id)}

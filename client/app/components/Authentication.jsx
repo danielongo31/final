@@ -28,7 +28,7 @@ export default function Authentication() {
                         </div>
                         <div className="form-group">
                             <label className="label">Contraseña:</label>
-                            <input className="form-control" type="text" onChange={(e) => setPassword(e.currentTarget.value)}></input>
+                            <input className="form-control" type="password" onChange={(e) => setPassword(e.currentTarget.value)}></input>
                         </div>
                         <button type="submit" className="button">Iniciar sesión</button>
                     </form>

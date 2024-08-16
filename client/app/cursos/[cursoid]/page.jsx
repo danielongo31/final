@@ -8,7 +8,7 @@ import axios from "axios";
 import Link from 'next/link';
 import { useEffect, useState } from "react";
 
-export default function page({
+export default function Page({
     params
 }) {
 
@@ -24,7 +24,7 @@ export default function page({
         };
 
         getActividades();
-    }, []);
+    }, [cursoid]);
 
     const deleteActividad = async (id) => {
         const { success, result } = (await axios.delete(`/api/actividades/delete/${id}`)).data;
@@ -65,14 +65,14 @@ export default function page({
                         getActions: ({ id }) => {
 
                             return [
-                                <GridActionsCellItem
+                                <GridActionsCellItem key={1}
                                     icon={<EditRoundedIcon />}
                                     label="Edit"
                                     className="textPrimary"
                                     href={`/cursos/${cursoid}/actividades/${id}`}
                                     color="inherit"
                                 />,
-                                <GridActionsCellItem
+                                <GridActionsCellItem key={2}
                                     icon={<DeleteRoundedIcon />}
                                     label="Delete"
                                     onClick={() => deleteActividad(id)}

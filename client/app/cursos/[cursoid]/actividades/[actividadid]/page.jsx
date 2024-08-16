@@ -27,7 +27,7 @@ export default function ActualizarActividad({
         };
 
         getActividad();
-    }, [])
+    }, [actividadid])
 
 
     const handleSubmit = async (e) => {

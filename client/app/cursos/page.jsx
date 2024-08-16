@@ -31,8 +31,9 @@ export default function CursosPage() {
                 gap={2}
             >
                 {
-                    cursos.map(curso => (
+                    cursos.map((curso, key) => (
                         <Card
+                            key={key}
                             variant="outlined"
                         >
                             <CardActionArea

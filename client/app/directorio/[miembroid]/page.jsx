@@ -31,7 +31,7 @@ export default function ActualizarMiembro({
         };
 
         getMiembro();
-    }, [])
+    }, [miembroid])
 
 
     const handleSubmit = async (e) => {

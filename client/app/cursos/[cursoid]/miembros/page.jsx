@@ -34,7 +34,7 @@ export default function MiembroPage({
     };
 
     getMiembros();
-  }, []);
+  }, [cursoid]);
 
   return (
     <Container
@@ -107,14 +107,14 @@ export default function MiembroPage({
             getActions: ({ id }) => {
 
               return [
-                <GridActionsCellItem
+                <GridActionsCellItem key={1}
                   icon={<AddCircleRoundedIcon />}
                   label="Add"
                   href={`/cursos/${cursoid}/miembros/${id}`}
                   color="inherit"
                   component={Link}
                 />,
-                <GridActionsCellItem
+                <GridActionsCellItem key={2}
                   icon={<DeleteRoundedIcon />}
                   label="Delete"
                   onClick={() => deleteMiembro(id)}

@@ -30,7 +30,7 @@ export default function AgregarPuntos({
         };
 
         getMiembro();
-    },[])
+    },[miembroid])
 
 
     const handleSubmit = async (e) => {
