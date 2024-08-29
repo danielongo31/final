@@ -23,7 +23,7 @@ export default function Authentication() {
                 <div className="form-container">
                     <form className="form" onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <label className="label">Correo:</label>
+                            <label className="label">Usuario:</label>
                             <input className="form-control" type="text" onChange={(e) => setCorreo(e.currentTarget.value)}></input>
                         </div>
                         <div className="form-group">
