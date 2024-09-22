@@ -1,6 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { MiembroService } from '../miembro.service';
 import MiembroEntity from '../entity/Miembro.entity';
+import MiembroResponseDTO from '../dto/response/MiembroResponse.dto';
+import { promises } from 'dns';
 
 
 @Controller('/miembro')
@@ -9,7 +11,7 @@ export class MiembroController {
     constructor (private readonly service : MiembroService) {}
 
     @Get()
-    async getAll() {
+    async getAll(): Promise<MiembroResponseDTO[]>{
         return await this.service.getAll();
     }
 

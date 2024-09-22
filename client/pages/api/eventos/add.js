@@ -1,23 +1,22 @@
 import axios from "axios";
 
-export default async function handler(req, res) {
+export default async function handler(req, res){
 
     if (req.method == 'POST') {
-        const user = req.body;
+        const eventos = req.body;
 
         try {
-            await axios.post('http://localhost:3001/v1/api/user/auth', user);
-        
+            axios.post('http://localhost:3001/v1/api/eventos', eventos);
+
             res.status(200).json({
                 success: true,
-                result: 'User login'
+                result: 'Evento agregado'
             });
         } catch (error) {
             res.status(500).json({
                 success: false,
-                result: 'Error al iniciar sesión'
+                result: 'Error al agregar el evento'
             });
         }
     }
-
-};
+}

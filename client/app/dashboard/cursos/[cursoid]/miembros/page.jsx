@@ -59,6 +59,11 @@ export default function MiembroPage({
             width: 130
           },
           {
+            field: 'rol',
+            headerName: 'Rol',
+            width: 165
+          },
+          {
             field: 'edad',
             headerName: 'Edad',
             width: 80
@@ -132,7 +137,7 @@ export default function MiembroPage({
         pageSizeOptions={[5, 10]}
         checkboxSelection
       />
-      <Link href={`/agregar_miembros?curso=${cursoid}`} className="button" style={{
+      <Link href={`/dashboard/agregar_miembros?curso=${cursoid}`} className="button" style={{
         display: "block",
         float: "left"
       }}>Agregar miembro</Link>

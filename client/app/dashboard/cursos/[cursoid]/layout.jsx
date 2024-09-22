@@ -11,7 +11,7 @@ export default function CursoLayout({ children, params }) {
                 <Stack direction="row">
                     <Button
                         component={Link}
-                        href={`/cursos/${cursoid}`}
+                        href={`/dashboard/cursos/${cursoid}`}
                     >
                         <Typography color={"white"}>
                             Actividades
@@ -19,7 +19,7 @@ export default function CursoLayout({ children, params }) {
                     </Button>
                     <Button
                         component={Link}
-                        href={`/cursos/${cursoid}/miembros`}
+                        href={`/dashboard/cursos/${cursoid}/miembros`}
                     >
                         <Typography color={"white"}>
                             Miembros

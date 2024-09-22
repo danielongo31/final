@@ -23,6 +23,9 @@ export class UserService{
     async auth(user: UserEntity){
         const resultado = await this.respository.findOneBy({ correo: user.correo });
 
+        if (resultado == null){
+            throw new HttpException ("Usuario no encontrado", 500);
+        }
         if ( resultado.password != user.password ) {
             throw new HttpException ("Contraseña incorrecta", 500);
         }

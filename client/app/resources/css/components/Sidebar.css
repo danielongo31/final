@@ -1,0 +1,11 @@
+.sidebar {
+    width: 100%;
+    background-color: rgba(24,24,24,0.6);
+    position: fixed!important;
+    top: 0;
+    z-index: 2;
+}
+
+.sidebar .navbar-collapse {
+    flex-grow: 0;
+}

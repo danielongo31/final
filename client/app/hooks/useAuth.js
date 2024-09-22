@@ -11,8 +11,8 @@ export const useAuth = () => {
                 correo,
                 password,
             }
-            const result = await axios.post('/api/user/auth', user);
-
+            const result = (await axios.post('/api/user/auth', user)).data;
+        
             localStorage.setItem("user", result);
 
             dispatch({ type: "LOGIN", payload: user })
@@ -24,6 +24,7 @@ export const useAuth = () => {
     const logout = () => {
         localStorage.removeItem("user")
         dispatch({ type: "LOGOUT" })
+        window.location.replace('/')
     }
 
     return {

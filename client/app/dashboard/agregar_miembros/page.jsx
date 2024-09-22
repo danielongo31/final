@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useEffect, useState } from 'react';
-import '../resources/css/Global.css';
+import '../../resources/css/Global.css';
 import axios from 'axios';
 
 
@@ -89,7 +89,7 @@ export default function AgregarMiembros({
                             </select>
                         </div>
                         </div>
-                        {rol == 1 ? <div className="form-group">
+                        {rol == 1 || rol == 3 ? <div className="form-group">
                             <label className="label">Curso:</label>
                             <select className="select" onChange={(e) => setCurso(e.currentTarget.value)}>
                                 <option>Selecciona una opción</option>

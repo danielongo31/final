@@ -12,6 +12,8 @@ import RolEntity from './rol/entity/Rol.entity';
 import { RolModule } from './rol/rol.module';
 import UserEntity from './user/entity/User.Entity';
 import { UserModule } from './user/user.module';
+import EventosEntity from './eventos/entity/Eventos.entity';
+import { EventoModule } from './eventos/eventos.module';
 
 
 @Module({
@@ -32,6 +34,7 @@ import { UserModule } from './user/user.module';
         PuntosEntity,
         RolEntity,
         UserEntity,
+        EventosEntity,
       ],
       charset: 'utf8_general_ci',
       autoLoadEntities: true
@@ -42,6 +45,7 @@ import { UserModule } from './user/user.module';
     CursoModule,
     RolModule,
     UserModule,
+    EventoModule,
   ],
   controllers: [],
   providers: [],

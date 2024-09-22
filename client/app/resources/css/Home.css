@@ -1,0 +1,102 @@
+.content-home .welcome {
+    height: 850px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content-home .welcome img {
+    object-fit: cover;
+}
+
+.content-home .welcome .banner {
+    width: 100%;
+    bottom: -255px;
+}
+
+.content-home .quick-info {
+    padding-top: 142px;
+    padding-bottom: 121px;
+}
+
+.content-home .content-places .place {
+    width: auto;
+    padding: 15px;
+}
+
+.content-home .content-places .place .place-image {
+    width: auto;
+    height: 260px;
+    overflow: hidden;
+}
+
+@media (min-width: 1366px) {
+    .content-home .content-places .place .place-image {
+        width: 360px;
+    }
+
+    .content-home .content-map .content-google-maps .row,
+    .content-home .content-contact .row {
+        flex-direction: row!important;
+    }
+}
+
+.content-home .content-places .place .place-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.content-home .content-map {
+    background-image: url('/resources/imgs/bg2.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.content-home .content-map::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.content-home .content-map .content-google-maps {
+    padding: 15px;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+}
+
+.content-home .content-map .content-google-maps .row,
+.content-home .content-contact .row {
+    flex-direction: column;
+}
+
+.content-home .content-map .content-google-maps iframe {
+    width: 100%;
+    height: 400px;
+}
+
+.content-home .content-map .content-google-maps p {
+    line-height: 24px;
+}
+
+.content-home .content-map .content-google-maps a,
+.content-home .content-contact button {
+    background-color: rgba(237,35,69,0.7);
+}
+
+.content-home .content-map .content-google-maps a:hover {
+    background-color: rgba(237,35,69);
+}
+
+.content-home .content-contact button {
+    outline: none;
+    border: none;
+    color: white;
+}

@@ -37,7 +37,9 @@ export default class MiembroEntity {
     @ManyToOne(() => CursoEntity, (curso) => curso.miembros)
     curso: CursoEntity;
 
-    @ManyToOne(() => RolEntity, (rol) => rol.miembros)
+    @ManyToOne(() => RolEntity, (rol) => rol.miembros, {
+        eager: true
+    })
     rol: RolEntity;
 
     @OneToOne(() => PuntosEntity, {

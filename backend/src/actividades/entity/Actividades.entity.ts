@@ -8,7 +8,7 @@ export default class ActividadesEntity {
 
     @PrimaryGeneratedColumn()
     id: number;
-
+    
     @Column()
     descripcion: string;
 

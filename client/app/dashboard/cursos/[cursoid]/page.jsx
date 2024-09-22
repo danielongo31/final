@@ -69,7 +69,7 @@ export default function Page({
                                     icon={<EditRoundedIcon />}
                                     label="Edit"
                                     className="textPrimary"
-                                    href={`/cursos/${cursoid}/actividades/${id}`}
+                                    href={`/dashboard/cursos/${cursoid}/actividades/${id}`}
                                     color="inherit"
                                 />,
                                 <GridActionsCellItem key={2}
@@ -90,7 +90,7 @@ export default function Page({
                 pageSizeOptions={[5, 10]}
                 checkboxSelection
             />
-            <Link href={`/cursos/${cursoid}/actividades`} className="button" style={{
+            <Link href={`/dashboard/cursos/${cursoid}/actividades`} className="button" style={{
                 display: "block",
                 float: "left"
             }}>Agregar actividad</Link>

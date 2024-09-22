@@ -100,7 +100,7 @@ export default function Home() {
         pageSizeOptions={[5, 10]}
         checkboxSelection
       />
-      <Link href={`/agregar_miembros`} className="button" style={{
+      <Link href={`/dashboard/agregar_miembros`} className="button" style={{
         display: "block",
         float: "left"
       }}>Agregar miembro</Link>
