@@ -1,9 +1,8 @@
 .content-home .welcome {
+    max-width: 1000px;
     height: 850px;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    margin: auto;
 }
 
 .content-home .welcome img {
