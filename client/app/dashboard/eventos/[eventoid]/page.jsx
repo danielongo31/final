@@ -12,8 +12,8 @@ export default function ActualizarEvento({
     const [evento, setEvento] = useState({
         nombre: "",
         descripcion: "",
-        horaInicio: "",
-        horaSalida: "",
+        fechaInicio: "",
+        fechaFin: "",
         fecha: "",
 
 
@@ -57,18 +57,14 @@ export default function ActualizarEvento({
                             <textarea className="form-control" type="text" onChange={(e) => setEvento({...evento, descripcion: e.currentTarget.value})} value={evento.descripcion}></textarea>
                         </div>
                         <div className="form-group">
-                            <label className="label">Hora de inicio:</label>
-                            <input className="form-control" type="time" onChange={(e) => setEvento({...evento, horaInicio: e.currentTarget.value})} value={evento.horaInicio}></input>
+                            <label className="label">Fecha de inicio:</label>
+                            <input className="form-control" type="datetime-local" onChange={(e) => setEvento({...evento, fechaInicio: e.currentTarget.value})} value={evento.fechaInicio}></input>
                         </div>
                         <div className="form-group">
-                            <label className="label">Hora de salida:</label>
-                            <input className="form-control" type="time" onChange={(e) => setEvento({...evento, horaSalida: e.currentTarget.value})} value={evento.horaSalida}></input>
+                            <label className="label">Fecha de fin:</label>
+                            <input className="form-control" type="datetime-local" onChange={(e) => setEvento({...evento, fechaFin: e.currentTarget.value})} value={evento.fechaFin}></input>
                         </div>
-                        <div className="form-group">
-                            <label className="label">Fecha:</label>
-                            <input className="form-control" type="date" onChange={(e) => setEvento({...evento, fecha: e.currentTarget.value})} value={evento.fecha}></input>
-                        </div> 
-                        <button type="submit" className="button">Actualizar miembro</button>
+                        <button type="submit" className="button">Actualizar evento</button>
                     </form>
                 </div>
             </div>

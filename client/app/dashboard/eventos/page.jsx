@@ -53,21 +53,19 @@ export default function Home() {
             width: 200
           },
           {
-            field: 'horaInicio',
-            headerName: 'Hora de Inicio',
-            width: 200
-          },
-          {
-            field: 'horaSalida',
-            headerName: 'Hora de Salida',
-            width: 200
-          },
-          {
-            field: 'fecha',
-            headerName: 'Fecha',
+            field: 'fechaInicio',
+            headerName: 'Fecha de Inicio',
             width: 100,
             valueGetter: (value, row, column) => {
-                return new Date(row.fecha).toLocaleDateString()
+                return new Date(row.fechaInicio).toLocaleDateString()
+            }
+          },
+          {
+            field: 'fechaFin',
+            headerName: 'Fecha de finalización',
+            width: 200,
+            valueGetter: (value, row, column) => {
+                return new Date(row.fechaFin).toLocaleDateString()
             }
           },
           {

@@ -25,6 +25,14 @@ export default function CursoLayout({ children, params }) {
                             Miembros
                         </Typography>
                     </Button>
+                    <Button
+                        component={Link}
+                        href={`/dashboard/cursos/${cursoid}/canjeo`}
+                    >
+                        <Typography color={"white"}>
+                            Canjeo de puntos
+                        </Typography>
+                    </Button>
                 </Stack>
             </Box>
             {children}

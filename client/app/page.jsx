@@ -1,39 +1,25 @@
 'use client'
 
-// import React, { useEffect, useState } from "react";
-// import Image from "next/image";
-// import Link from "next/link";
+import Image from "next/image";
 
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import "@/app/resources/css/Home.css";
 
-// import React, { useMemo } from "react";
-// import Topbar from "./components/Topbar";
+import React, { useMemo } from "react";
+import Topbar from "./components/Topbar";
 import EventsCalendar from "./components/EventsCalendar";
 
 export default function page() {
 
-  // const [eventos, setEventos] = useState([]);
-
-  // useEffect(() => {
-  //   const getEventos = async () => {
-  //     const { success, result } = (await axios.get('/api/eventos/getAll')).data;
-
-  //     if (success) setEventos(result);
-
-  //   };
-
-  //   getEventos();
-  // }, []);
 
   return (
     <>
-      {/* <Topbar /> */}
+      <Topbar />
 
       <div className="content-home" id="inicio">
         <div className="welcome">
-          {/* <Image src={"/resources/imgs/bg1.jpg"} width={2160} height={1080} /> */}
+          <Image style={{ objectFit: "cover" }} src={"/resources/imgs/bg1.jpg"} width={2160} height={1080} />
         </div>
 
 
@@ -43,11 +29,11 @@ export default function page() {
           <div className="content-places row row-cols-3 align-items-center justify-content-center">
             <div className="col place">
               <div className="place-image rounded">
-                {/* <Image
+                <Image
                   src={"/resources/imgs/cultos.png"}
                   width={1200}
                   height={630}
-                /> */}
+                />
               </div>
 
               <div className="place-info py-4">
@@ -57,11 +43,11 @@ export default function page() {
 
             <div className="col place">
               <div className="place-image rounded">
-                {/* <Image
-                  src={"/resources/imgs/la-cristalina.png"}
+                <Image
+                  src={"/resources/imgs/ayunos.jpg"}
                   width={800}
                   height={534}
-                /> */}
+                />
               </div>
 
               <div className="place-info py-4">
@@ -71,11 +57,11 @@ export default function page() {
 
             <div className="col place">
               <div className="place-image rounded">
-                {/* <Image
+                <Image
                   src={"/resources/imgs/cena-del-senor.png"}
                   width={1536}
                   height={1536}
-                /> */}
+                />
               </div>
 
               <div className="place-info py-4">
@@ -85,43 +71,43 @@ export default function page() {
 
             <div className="col place">
               <div className="place-image rounded">
-                {/* <Image
+                <Image
                   src={"/resources/imgs/clase-dominical.png"}
                   width={1600}
                   height={896}
-                /> */}
+                />
               </div>
 
               <div className="place-info py-4">
-                <h3>Clases dominicales</h3>
+                <h3>Clases Ebenezer</h3>
               </div>
             </div>
 
             <div className="col place">
               <div className="place-image rounded">
-                {/* <Image
-                  src={"/resources/imgs/quebrada-la-cristalina.png"}
+                <Image
+                  src={"/resources/imgs/retiro-juvenil.jpg"}
                   width={801}
                   height={601}
-                /> */}
+                />
               </div>
 
               <div className="place-info py-4">
-                <h3>5</h3>
+                <h3>Retiros juveniles</h3>
               </div>
             </div>
 
             <div className="col place">
               <div className="place-image rounded">
-                {/* <Image
-                  src={"/resources/imgs/los-laureles.jpeg"}
+                <Image
+                  src={"/resources/imgs/vigilia.jpg"}
                   width={638}
                   height={426}
-                /> */}
+                />
               </div>
 
               <div className="place-info py-4">
-                <h3>6</h3>
+                <h3>Vigilias</h3>
               </div>
             </div>
           </div>
@@ -177,9 +163,9 @@ export default function page() {
           </p>
         </div>
 
-        <div className="welcome" id="calendario">
-          {/* <Image src={"/resources/imgs/bg2.jpg"} width={2160} height={1080} /> */}
-          <EventsCalendar/>
+        <div className="welcome calendar" id="calendario">
+
+          <EventsCalendar />
         </div>
       </div>
     </>

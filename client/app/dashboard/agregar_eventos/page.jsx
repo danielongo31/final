@@ -9,10 +9,8 @@ export default function AgregarEventos({
     
     const [nombre, setNombre] = useState("");
     const [descripcion, setDescripcion] = useState("");
-    const [horaInicio, setHoraInicio] = useState("");
-    const [horaSalida, setHoraSalida] = useState("");
-    const [fecha, setFecha] = useState("");
-
+    const [fechaInicio, setFechaInicio] = useState("");
+    const [fechaFin, setFechaFin] = useState("");
 
 
     const handleSubmit = async (e) => {
@@ -20,9 +18,8 @@ export default function AgregarEventos({
         const eventos = {
             nombre,
             descripcion,
-            horaInicio,
-            horaSalida,
-            fecha,
+            fechaInicio,
+            fechaFin,
         }
         await axios.post('/api/eventos/add', eventos);
         window.location.reload()
@@ -43,16 +40,12 @@ export default function AgregarEventos({
                             <textarea className="form-control" type="text" onChange={(e) => setDescripcion(e.currentTarget.value)}></textarea>
                         </div>
                         <div className="form-group">
-                            <label className="label">Hora de inicio:</label>
-                            <input className="form-control" type="time" onChange={(e) => setHoraInicio(e.currentTarget.value)}></input>
+                            <label className="label">Fecha de inicio:</label>
+                            <input className="form-control" type="datetime-local" onChange={(e) => setFechaInicio(e.currentTarget.value)}></input>
                         </div>
                         <div className="form-group">
-                            <label className="label">Hora de salida:</label>
-                            <input className="form-control" type="time" onChange={(e) => setHoraSalida(e.currentTarget.value)}></input>
-                        </div>
-                        <div className="form-group">
-                            <label className="label">Fecha:</label>
-                            <input className="form-control" type="date" onChange={(e) => setFecha(e.currentTarget.value)}></input>
+                            <label className="label">Fecha de fin:</label>
+                            <input className="form-control" type="datetime-local" onChange={(e) => setFechaFin(e.currentTarget.value)}></input>
                         </div>
                         <button type="submit" className="button">Crear evento</button>
                     </form>

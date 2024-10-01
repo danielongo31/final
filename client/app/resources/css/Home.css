@@ -1,7 +1,12 @@
 .content-home .welcome {
-    max-width: 1000px;
     height: 850px;
     overflow: hidden;
+    margin: auto;
+}
+
+.content-home .calendar {
+    max-width: 1000px;
+    height: 850px;
     margin: auto;
 }
 
@@ -37,7 +42,7 @@
 
     .content-home .content-map .content-google-maps .row,
     .content-home .content-contact .row {
-        flex-direction: row!important;
+        flex-direction: row !important;
     }
 }
 
@@ -87,11 +92,11 @@
 
 .content-home .content-map .content-google-maps a,
 .content-home .content-contact button {
-    background-color: rgba(237,35,69,0.7);
+    background-color: rgba(237, 35, 69, 0.7);
 }
 
 .content-home .content-map .content-google-maps a:hover {
-    background-color: rgba(237,35,69);
+    background-color: rgba(237, 35, 69);
 }
 
 .content-home .content-contact button {

@@ -16,12 +16,9 @@ export default class EventosEntity {
     descripcion: string;
 
     @Column()
-    horaInicio: string;
+    fechaInicio: Date;
 
     @Column()
-    horaSalida: string;
-
-    @Column()
-    fecha: Date;
+    fechaFin: Date;
 
 }

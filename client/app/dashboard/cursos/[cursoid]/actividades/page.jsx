@@ -3,7 +3,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 
-export default function AgregarPuntos({
+export default function AgregarActividades({
     params
 }) {
     

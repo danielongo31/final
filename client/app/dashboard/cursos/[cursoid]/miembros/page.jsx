@@ -141,6 +141,18 @@ export default function MiembroPage({
         display: "block",
         float: "left"
       }}>Agregar miembro</Link>
+      <Link href={`/dashboard/agregar_miembros?curso=${cursoid}`} className="button" style={{
+        display: "block",
+        float: "left"
+      }}>Agregar puntos Biblia</Link>
+      <Link href={`/dashboard/agregar_miembros?curso=${cursoid}`} className="button" style={{
+        display: "block",
+        float: "left"
+      }}>Agregar puntos Ofrenda</Link>
+      <Link href={`/dashboard/agregar_miembros?curso=${cursoid}`} className="button" style={{
+        display: "block",
+        float: "left"
+      }}>Agregar puntos Participación</Link>
     </Container>
   );
 }
