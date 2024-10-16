@@ -18,5 +18,7 @@ export default class PuntosEntity {
     @Column()
     participacion: number;
 
+    @OneToOne(() => MiembroEntity, (miembro ) => miembro.puntos)
+    miembro: MiembroEntity;
 
 };

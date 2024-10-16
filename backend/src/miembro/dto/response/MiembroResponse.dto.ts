@@ -8,6 +8,7 @@ export default class MiembroResponseDTO{
         private telefono: string,
         private permiso: string,
         private direccion: string,
-        private rol: string
+        private rol: string,
+        private puntosId: number
     ){}
 }

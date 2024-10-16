@@ -27,7 +27,8 @@ export class MiembroService {
                 miembro.telefono,
                 miembro.permiso,
                 miembro.direccion,
-                miembro.rol.nombre
+                miembro.rol.nombre,
+                miembro.puntosid
             );
             miembros.push(dto);
         })
@@ -61,7 +62,8 @@ export class MiembroService {
                 miembro.telefono,
                 miembro.permiso,
                 miembro.direccion,
-                miembro.rol.nombre
+                miembro.rol.nombre,
+                miembro.puntosid
             );
             miembros.push(dto);
         })

@@ -20,69 +20,39 @@ const MenuProps = {
 };
 
 export default function CanjeoPuntos({ params }) {
-    const theme = useTheme();
-    const [nombres, setNombres] = useState([]);
+
     const [miembros, setMiembros] = useState([]);
-    const [puntosTotales, setPuntosTotales] = useState(0);
+    const [puntos, setPuntos] = useState(0);
     const [cantidad, setCantidad] = useState("");
     const { cursoid } = params;
+    const [puntosId, setPuntosId] = useState(0);
 
     useEffect(() => {
         const getMiembros = async () => {
-            const { success, result } = (await axios.get(`/api/miembro/curso/${cursoid}`)).data;
+            const { success, result } = (await axios.get(`/api/miembro/getByCurso/${cursoid}`)).data;
             if (success) {
-                const updatedResult = await Promise.all(
-                    result.map(async (miembro) => {
-                        const { result: puntos } = (await axios.get(`/api/puntos/getById/${miembro.puntosid}`)).data;
-                        miembro.puntos = puntos;
-                        return miembro;
-                    })
-                );
-                setMiembros(updatedResult);
-                const totalPuntos = updatedResult.reduce((acc, miembro) => acc + (miembro.puntos.biblia + miembro.puntos.ofrenda + miembro.puntos.participacion), 0);
-                setPuntosTotales(totalPuntos);
+                setMiembros(result);
             }
         };
 
         getMiembros();
     }, [cursoid]);
 
-    const handleChange = (event) => {
-        const { target: { value } } = event;
-        setNombres(typeof value === 'string' ? value.split(',') : value);
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-
-        const canjeoData = {
-            miembros: nombres.map(nombre => {
-                const miembroSeleccionado = miembros.find(miembro => miembro.nombres === nombre);
-                return { id: miembroSeleccionado.id, puntos: -parseInt(cantidad, 10) }; // Restar puntos
-            }),
-            curso: cursoid,
-        };
-
-        try {
-            await Promise.all(canjeoData.miembros.map(async miembro => {
-                await axios.patch(`/api/miembro/update/${miembro.id}`, {
-                    puntos: miembro.puntos,
-                });
-            }));
-
-            window.location.reload();
-        } catch (error) {
-            console.error("Error al canjear puntos:", error);
+    const handleSelect = async (event) => {
+        const miembroid = event.target.value;
+        const { success, result:{id, biblia, ofrenda, participacion}} = (await axios.get(`/api/puntos/getByMiembro/${miembroid}`)).data;
+        if (success){
+            setPuntosId(id);
+            setPuntos(biblia + ofrenda + participacion);
         }
     };
 
-    function getStyles(name, nombres, theme) {
-        return {
-            fontWeight: nombres.includes(name)
-                ? theme.typography.fontWeightMedium
-                : theme.typography.fontWeightRegular,
-        };
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+        setPuntos(puntos - cantidad)
     }
+
+
 
     return (
         <div className="container">
@@ -93,17 +63,8 @@ export default function CanjeoPuntos({ params }) {
                         <div>
                             <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
                                 <Select
-                                    multiple
                                     displayEmpty
-                                    value={nombres}
-                                    onChange={handleChange}
                                     input={<OutlinedInput />}
-                                    renderValue={(selected) => {
-                                        if (selected.length === 0) {
-                                            return <em>Selecciona miembro</em>;
-                                        }
-                                        return selected.join(', ');
-                                    }}
                                     MenuProps={MenuProps}
                                     inputProps={{ 'aria-label': 'Without label' }}
                                     sx={{
@@ -118,14 +79,14 @@ export default function CanjeoPuntos({ params }) {
                                             borderColor: 'transparent', 
                                         },
                                     }}
+                                onChange={handleSelect}
                                 >
                                     {miembros.map((miembro) => (
                                         <MenuItem
                                             key={miembro.id} 
-                                            value={miembro.nombres} 
-                                            style={getStyles(miembro.nombres, nombres, theme)}
+                                            value={miembro.id} 
                                         >
-                                            {miembro.nombre} 
+                                            {miembro.nombres} 
                                         </MenuItem>
                                     ))}
                                 </Select>
@@ -133,7 +94,7 @@ export default function CanjeoPuntos({ params }) {
                         </div>
                         <div>
                             <label className="label">Puntos totales:</label>
-                            <span className="form-control">{puntosTotales}</span>
+                            <span className="form-control">{puntos}</span>
                         </div>
                         <div className="form-group">
                             <label className="label">Cantidad a canjear:</label>

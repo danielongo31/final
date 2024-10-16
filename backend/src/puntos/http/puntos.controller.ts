@@ -23,7 +23,7 @@ export class PuntosController {
     async getByMiembro(@Param('miembroid') miembroid: number){
         const resultado = await this.service.getByMiembro(miembroid)
 
-        return resultado;
+        return resultado[0];
     }
 
     @Post()

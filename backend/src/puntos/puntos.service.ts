@@ -23,11 +23,11 @@ export class PuntosService {
     }
 
     async getByMiembro(miembroid: number){
-        // const miembro = new MiembroEntity();
-        // miembro.id = miembroid;
-        // const resultado = await this.repository.findBy({ miembro });
+         const miembro = new MiembroEntity();
+         miembro.id = miembroid;
+         const resultado = await this.repository.findBy({ miembro });
 
-        // return resultado;
+         return resultado;
     }
 
     async create(puntos: Object) {

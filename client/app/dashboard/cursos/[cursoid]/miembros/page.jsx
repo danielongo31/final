@@ -23,7 +23,7 @@ export default function MiembroPage({
       if (success) {
         result = await Promise.all(
           result.map(async (miembro) => {
-            const { result: puntos } = (await axios.get(`/api/puntos/getById/${miembro.puntosid}`)).data;
+            const { result: puntos } = (await axios.get(`/api/puntos/getById/${miembro.puntosId}`)).data;
             miembro.puntos = puntos;
             return miembro;
           })
