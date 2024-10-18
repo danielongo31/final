@@ -3,13 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import PuntosEntity from './entity/Puntos.entity';
 import MiembroEntity from 'src/miembro/entity/Miembro.entity';
+import MasiveRequestDTO from './dto/request/MasiveRequest.dto';
 
 
 @Injectable()
 export class PuntosService {
 
-    constructor (
-        @InjectRepository(PuntosEntity) private readonly repository : Repository<PuntosEntity>
+    constructor(
+        @InjectRepository(PuntosEntity) private readonly repository: Repository<PuntosEntity>
     ) { }
 
     async getAll() {
@@ -22,12 +23,12 @@ export class PuntosService {
         return resultado;
     }
 
-    async getByMiembro(miembroid: number){
-         const miembro = new MiembroEntity();
-         miembro.id = miembroid;
-         const resultado = await this.repository.findBy({ miembro });
+    async getByMiembro(miembroid: number) {
+        const miembro = new MiembroEntity();
+        miembro.id = miembroid;
+        const resultado = await this.repository.findBy({ miembro });
 
-         return resultado;
+        return resultado;
     }
 
     async create(puntos: Object) {
@@ -38,6 +39,12 @@ export class PuntosService {
 
     async update(id: number, puntos: Object) {
         await this.repository.update(id, puntos);
+
+        return true;
+    }
+
+    async masive(puntos: MasiveRequestDTO) {
+        const resultado = await this.repository.createQueryBuilder().update(PuntosEntity).set({totales: () => "totales + :incremento"}).where("id in (:...ids)", {ids: puntos.ids}).setParameter("incremento", puntos.totales).execute();
 
         return true;
     }

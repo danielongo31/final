@@ -3,7 +3,7 @@
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import { Container } from "@mui/material";
+import { Button, Container, Stack } from "@mui/material";
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import axios from "axios";
 import Link from 'next/link';
@@ -16,6 +16,7 @@ export default function MiembroPage({
   const { cursoid } = params;
 
   const [miembros, setMiembros] = useState([]);
+  const [ids, setIds] = useState([]);
 
   useEffect(() => {
     const getMiembros = async () => {
@@ -36,6 +37,25 @@ export default function MiembroPage({
     getMiembros();
   }, [cursoid]);
 
+  const deleteMiembro = async (id) => {
+    const { success, result } = (await axios.delete(`/api/miembro/delete/${id}`)).data;
+
+    if (success) window.location.reload();
+  };
+
+  const addPuntos = async () => {
+    const { success, result } = (await axios.post('/api/puntos/masive', {
+      ids,
+      totales: 100
+    })).data;
+    
+    if (success) window.location.reload();
+  }
+
+  const handleSetIds = (model) => {
+    setIds(miembros.filter(miembro => model.includes(miembro.id)).map(miembro => miembro.puntos.id))
+  }
+
   return (
     <Container
       maxWidth="xl"
@@ -51,56 +71,29 @@ export default function MiembroPage({
           {
             field: 'nombres',
             headerName: 'Nombres',
-            width: 130
+            width: 180
           },
           {
             field: 'apellidos',
             headerName: 'Apellidos',
-            width: 130
+            width: 180
           },
           {
             field: 'rol',
             headerName: 'Rol',
-            width: 165
+            width: 180
           },
           {
             field: 'edad',
             headerName: 'Edad',
-            width: 80
-          },
-          {
-            field: 'biblia',
-            headerName: 'Puntos por Biblia',
-            width: 150,
-            valueGetter: (value, row, field) => {
-              return row.puntos.biblia
-            },
-            align: "center"
-          },
-          {
-            field: 'ofrenda',
-            headerName: 'Puntos por Ofrenda',
-            width: 200,
-            valueGetter: (value, row, field) => {
-              return row.puntos.ofrenda
-            },
-            align: "center"
-          },
-          {
-            field: 'participacion',
-            headerName: 'Puntos por Participación',
-            width: 200,
-            valueGetter: (value, row, field) => {
-              return row.puntos.participacion
-            },
-            align: "center"
+            width: 180
           },
           {
             field: 'total',
-            headerName: 'Puntos Totales',
-            width: 160,
+            headerName: 'Puntos',
+            width: 180,
             valueGetter: (value, row, field) => {
-              return row.puntos.biblia + row.puntos.ofrenda + row.puntos.participacion
+              return row.puntos.totales
             },
             align: "center"
           },
@@ -115,7 +108,7 @@ export default function MiembroPage({
                 <GridActionsCellItem key={1}
                   icon={<AddCircleRoundedIcon />}
                   label="Add"
-                  href={`/cursos/${cursoid}/miembros/${id}`}
+                  href={`/dashboard/cursos/${cursoid}/miembros/${id}`}
                   color="inherit"
                   component={Link}
                 />,
@@ -136,23 +129,16 @@ export default function MiembroPage({
         }}
         pageSizeOptions={[5, 10]}
         checkboxSelection
+
+        onRowSelectionModelChange={handleSetIds}
       />
-      <Link href={`/dashboard/agregar_miembros?curso=${cursoid}`} className="button" style={{
-        display: "block",
-        float: "left"
-      }}>Agregar miembro</Link>
-      <Link href={`/dashboard/agregar_miembros?curso=${cursoid}`} className="button" style={{
-        display: "block",
-        float: "left"
-      }}>Agregar puntos Biblia</Link>
-      <Link href={`/dashboard/agregar_miembros?curso=${cursoid}`} className="button" style={{
-        display: "block",
-        float: "left"
-      }}>Agregar puntos Ofrenda</Link>
-      <Link href={`/dashboard/agregar_miembros?curso=${cursoid}`} className="button" style={{
-        display: "block",
-        float: "left"
-      }}>Agregar puntos Participación</Link>
+
+      <Stack direction={"row"} spacing={3} padding={2}>
+      <Link href={`/dashboard/agregar_miembros?curso=${cursoid}`} className="button" >Agregar miembro</Link>
+      <Button className="button" onClick={addPuntos} variant='contained' >Agregar puntos Biblia</Button>
+      <Button className="button" onClick={addPuntos} variant='contained' >Agregar puntos Ofrenda</Button>
+      <Button className="button" onClick={addPuntos} variant='contained' >Agregar puntos Participación</Button>
+      </Stack>
     </Container>
   );
 }

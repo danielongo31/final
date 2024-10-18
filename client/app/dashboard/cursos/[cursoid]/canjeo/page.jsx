@@ -40,18 +40,21 @@ export default function CanjeoPuntos({ params }) {
 
     const handleSelect = async (event) => {
         const miembroid = event.target.value;
-        const { success, result:{id, biblia, ofrenda, participacion}} = (await axios.get(`/api/puntos/getByMiembro/${miembroid}`)).data;
-        if (success){
+        const { success, result: { id, totales } } = (await axios.get(`/api/puntos/getByMiembro/${miembroid}`)).data;
+        if (success) {
             setPuntosId(id);
-            setPuntos(biblia + ofrenda + participacion);
+            setPuntos(totales);
         }
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-        setPuntos(puntos - cantidad)
+        const valor = puntos - cantidad;
+        if(valor < 0) return
+        setPuntos(valor)
+        console.log(puntosId)
+        axios.patch(`/api/puntos/update/${puntosId}`, { totales: valor })
     }
-
 
 
     return (
@@ -68,25 +71,25 @@ export default function CanjeoPuntos({ params }) {
                                     MenuProps={MenuProps}
                                     inputProps={{ 'aria-label': 'Without label' }}
                                     sx={{
-                                        backgroundColor: 'white', 
+                                        backgroundColor: 'white',
                                         '& .MuiSelect-select': {
-                                            backgroundColor: 'white', 
+                                            backgroundColor: 'white',
                                         },
                                         '& .MuiOutlinedInput-notchedOutline': {
-                                            borderColor: 'transparent', 
+                                            borderColor: 'transparent',
                                         },
                                         '&:hover .MuiOutlinedInput-notchedOutline': {
-                                            borderColor: 'transparent', 
+                                            borderColor: 'transparent',
                                         },
                                     }}
-                                onChange={handleSelect}
+                                    onChange={handleSelect}
                                 >
                                     {miembros.map((miembro) => (
                                         <MenuItem
-                                            key={miembro.id} 
-                                            value={miembro.id} 
+                                            key={miembro.id}
+                                            value={miembro.id}
                                         >
-                                            {miembro.nombres} 
+                                            {miembro.nombres}
                                         </MenuItem>
                                     ))}
                                 </Select>
@@ -98,12 +101,13 @@ export default function CanjeoPuntos({ params }) {
                         </div>
                         <div className="form-group">
                             <label className="label">Cantidad a canjear:</label>
-                            <input className="form-control" type="number" value={cantidad} onChange={(e) => setCantidad(e.target.value)}/>
+                            <input className="form-control" type="number" value={cantidad} onChange={(e) => setCantidad(e.target.value)} />
                         </div>
-                        <button type="submit" className="button">Actualizar puntos</button>
+                        <button type="submit" className="button">Canjear puntos</button>
                     </form>
                 </div>
             </div>
         </div>
     );
+
 }

@@ -1,5 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { PuntosService } from '../puntos.service';
+import MasiveRequestDTO from '../dto/request/MasiveRequest.dto';
 
 
 @Controller('/puntos')
@@ -36,6 +37,13 @@ export class PuntosController {
     @Patch('/:id')
     async update(@Param('id') id: number, @Body() puntos: Object) {
         const resultado = await this.service.update(id, puntos);
+
+        return resultado;
+    }
+
+    @Post('/masive')
+    async masive(@Body() puntos: MasiveRequestDTO){
+        const resultado = await this.service.masive(puntos);
 
         return resultado;
     }

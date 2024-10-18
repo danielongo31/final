@@ -10,13 +10,7 @@ export default class PuntosEntity {
     id: number;
 
     @Column()
-    biblia: number;
-
-    @Column()
-    ofrenda: number;
-
-    @Column()
-    participacion: number;
+    totales: number;
 
     @OneToOne(() => MiembroEntity, (miembro ) => miembro.puntos)
     miembro: MiembroEntity;
