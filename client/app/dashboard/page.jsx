@@ -49,6 +49,7 @@ export default function CursosPage() {
 
                         <CardContent>
                             <Typography>{curso.nombre}</Typography>
+                            <Typography variant="body2" color="textSecondary">{curso.descripcion}</Typography>
                         </CardContent>
                     </CardActionArea>
                 </Card>
