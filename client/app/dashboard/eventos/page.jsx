@@ -34,6 +34,9 @@ export default function Home() {
   return (
     <Container
       maxWidth="xl"
+      sx={{
+        padding: '30px'
+    }}
     >
       <DataGrid
         rows={eventos}

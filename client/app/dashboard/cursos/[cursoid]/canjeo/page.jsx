@@ -89,7 +89,7 @@ export default function CanjeoPuntos({ params }) {
                                             key={miembro.id}
                                             value={miembro.id}
                                         >
-                                            {miembro.nombres}
+                                            {miembro.nombres} {miembro.apellidos}
                                         </MenuItem>
                                     ))}
                                 </Select>

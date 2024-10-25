@@ -5,7 +5,6 @@ import Link from "next/link";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-
 export default function CursosPage() {
   const [cursos, setCursos] = useState([]);
 
@@ -13,49 +12,49 @@ export default function CursosPage() {
       const getCursos = async () => {
           const { success, result } = (await axios.get('/api/curso/getAll')).data;
 
-          if (success) setCursos(result)
+          if (success) setCursos(result);
       };
 
       getCursos();
   }, []);
 
-
   return (
     <Container
-    maxWidth="xl"
-    sx={{
-        padding: '30px'
-    }}
->
-    <Stack
-        direction={'row'}
-        gap={2}
+      maxWidth="xl"
+      sx={{
+          padding: '30px'
+      }}
     >
-        {
-            cursos.map((curso, key) => (
-                <Card key={key}
-                    variant="outlined"
-                >
-                    <CardActionArea
-                        component={Link}
-                        href={`/cursos/${curso.id}`}
-                    >
-                        <CardMedia
-                            component="img"
-                            height="125"
-                            image="https://vilmanunez.com/wp-content/uploads/2016/03/herramientas-y-recursos-para-crear-curso-online.png"
-                            alt="green iguana"
-                        />
+      <Stack
+          direction={'row'}
+          gap={2}
+          flexWrap="wrap" 
+      >
+          {
+              cursos.map((curso, key) => (
+                  <Card key={key}
+                      variant="outlined"
+                  >
+                      <CardActionArea
+                          component={Link}
+                          href={`/cursos/${curso.id}`}
+                      >
+                          <CardMedia
+                              component="img"
+                              height="125"
+                              image={curso.imagen} 
+                              alt={curso.nombre} 
+                          />
 
-                        <CardContent>
-                            <Typography>{curso.nombre}</Typography>
-                            <Typography variant="body2" color="textSecondary">{curso.descripcion}</Typography>
-                        </CardContent>
-                    </CardActionArea>
-                </Card>
-            ))
-        }
-    </Stack>
-</Container>
+                          <CardContent>
+                              <Typography>{curso.nombre}</Typography>
+                              <Typography variant="body2" color="textSecondary">{curso.descripcion}</Typography>
+                          </CardContent>
+                      </CardActionArea>
+                  </Card>
+              ))
+          }
+      </Stack>
+    </Container>
   );
 }

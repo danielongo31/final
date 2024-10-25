@@ -36,6 +36,7 @@ export default function Page({
     return (
         <Container
             maxWidth="xl"
+            style={{ marginTop: '20px' }}
         >
             <DataGrid
                 rows={actividades}

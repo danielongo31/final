@@ -16,6 +16,9 @@ export default class CursoEntity {
     @Column()
     descripcion: string;
 
+    @Column()
+    imagen: string;
+
     @OneToMany(() => ActividadesEntity, (actividad) => actividad.curso)
     actividades: ActividadesEntity[];
 
