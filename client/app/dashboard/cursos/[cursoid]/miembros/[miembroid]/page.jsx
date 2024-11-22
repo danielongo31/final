@@ -9,9 +9,11 @@ export default function AgregarPuntos({
 
     const { miembroid } = params;
 
-    const [puntosTotales, setPuntosTotales] = useState(0);
+    const [puntosBiblia, setPuntosBiblia] = useState(0);
+    const [puntosOfrenda, setPuntosOfrenda] = useState(0);
+    const [puntosParticipacion, setPuntosParticipacion] = useState(0);
     const [miembro, setMiembro] = useState(null);
-
+    const [puntos, setPuntos] = useState([]);
 
     useEffect(() => {
         const getMiembro = async () => {
@@ -20,7 +22,9 @@ export default function AgregarPuntos({
             if (success) {
                 const { result: puntos } = (await axios.get(`/api/puntos/getById/${result.puntosid}`)).data;
 
-                setPuntosTotales(puntos.totales);
+                setPuntosBiblia(puntos.biblia);
+                setPuntosOfrenda(puntos.ofrenda);
+                setPuntosParticipacion(puntos.participacion);
                 setMiembro(result);
             }
         };
@@ -32,7 +36,9 @@ export default function AgregarPuntos({
     const handleSubmit = async (e) => {
         e.preventDefault();
         const puntos = {
-            totales: puntosTotales,
+            biblia: puntosBiblia,
+            ofrenda: puntosOfrenda,
+            participacion: puntosParticipacion,
         }
         console.log(miembro)
         await axios.patch(`/api/puntos/update/${miembro.puntosid}`, puntos);
@@ -42,14 +48,22 @@ export default function AgregarPuntos({
     return (
         <div className="container">
             <div className="box">
-                <h1 className="heading">Modificar Puntos</h1>
+                <h1 className="heading">Actualizar puntos</h1>
                 <div className="form-container">
                     <form className="form" onSubmit={handleSubmit}>
                         <div className="form-group">
-                            <label className="label">Puntos a modificar:</label>
-                            <input className="form-control" type="number" onChange={(e) => setPuntosTotales(parseInt(e.currentTarget.value))} value={puntosTotales}></input>
+                            <label className="label">Puntos por biblia:</label>
+                            <input className="form-control" type="number" onChange={(e) => setPuntosBiblia(parseInt(e.currentTarget.value))} value={puntosBiblia}></input>
                         </div>
-                        <button type="submit" className="button">Modificar Puntos</button>
+                        <div className="form-group">
+                            <label className="label">Puntos por ofrenda:</label>
+                            <input className="form-control" type="number" onChange={(e) => setPuntosOfrenda(parseInt(e.currentTarget.value))} value={puntosOfrenda}></input>
+                        </div>
+                        <div className="form-group">
+                            <label className="label">Puntos por participación:</label>
+                            <input className="form-control" type="number" onChange={(e) => setPuntosParticipacion(parseInt(e.currentTarget.value))} value={puntosParticipacion}></input>
+                        </div>
+                        <button type="submit" className="button">Actualizar puntos</button>
                     </form>
                 </div>
             </div>

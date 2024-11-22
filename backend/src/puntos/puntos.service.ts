@@ -44,7 +44,7 @@ export class PuntosService {
     }
 
     async masive(puntos: MasiveRequestDTO) {
-        const resultado = await this.repository.createQueryBuilder().update(PuntosEntity).set({totales: () => "totales + :incremento"}).where("id in (:...ids)", {ids: puntos.ids}).setParameter("incremento", puntos.totales).execute();
+        const resultado = await this.repository.createQueryBuilder().update(PuntosEntity).set({biblia: () => "biblia + :bibliaIncremento", ofrenda: () => "ofrenda + :ofrendaIncremento", participacion: () => "participacion + :participacionIncremento"}).where("id in (:...ids)", {ids: puntos.ids}).setParameter("bibliaIncremento", puntos.biblia,).setParameter("ofrendaIncremento", puntos.ofrenda).setParameter("participacionIncremento", puntos.participacion).execute();
 
         return true;
     }

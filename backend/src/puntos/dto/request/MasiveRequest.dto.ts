@@ -1,6 +1,8 @@
 export default class MasiveRequestDTO{
     constructor(
         public ids: number[],
-        public totales: number,
+        public biblia: number,
+        public ofrenda: number,
+        public participacion: number,
     ){}
 }

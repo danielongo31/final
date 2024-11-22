@@ -32,7 +32,7 @@ export default function ActualizarEvento({ params }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validación simple
+       
         if (!evento.nombre || !evento.descripcion) {
             setError("Los campos nombre y descripción son obligatorios.");
             return;

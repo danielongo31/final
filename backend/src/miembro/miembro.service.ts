@@ -73,7 +73,9 @@ export class MiembroService {
 
     async create(miembro: MiembroEntity) {
         const puntos = new PuntosEntity();
-        puntos.totales = 0
+        puntos.biblia = 0
+        puntos.ofrenda = 0
+        puntos.participacion = 0
         miembro.puntos = puntos;
         const resultado = await this.repository.save(miembro);
 

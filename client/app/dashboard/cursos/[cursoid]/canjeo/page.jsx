@@ -22,10 +22,14 @@ const MenuProps = {
 export default function CanjeoPuntos({ params }) {
 
     const [miembros, setMiembros] = useState([]);
-    const [puntos, setPuntos] = useState(0);
-    const [cantidad, setCantidad] = useState("");
+    const [puntosBiblia, setPuntosBiblia] = useState(0);
+    const [puntosOfrenda, setPuntosOfrenda] = useState(0);
+    const [puntosParticipacion, setPuntosParticipacion] = useState(0);
+    const [cantidad, setCantidad] = useState(0);
     const { cursoid } = params;
     const [puntosId, setPuntosId] = useState(0);
+    const [tipoPuntos, setTipoPuntos] = useState("");
+
 
     useEffect(() => {
         const getMiembros = async () => {
@@ -40,20 +44,51 @@ export default function CanjeoPuntos({ params }) {
 
     const handleSelect = async (event) => {
         const miembroid = event.target.value;
-        const { success, result: { id, totales } } = (await axios.get(`/api/puntos/getByMiembro/${miembroid}`)).data;
+        const { success, result: { id, biblia, ofrenda, participacion } } = (await axios.get(`/api/puntos/getByMiembro/${miembroid}`)).data;
         if (success) {
             setPuntosId(id);
-            setPuntos(totales);
+            setPuntosBiblia(biblia);
+            setPuntosOfrenda(ofrenda);
+            setPuntosParticipacion(participacion);
         }
     };
 
     const handleSubmit = async (event) => {
-        event.preventDefault()
-        const valor = puntos - cantidad;
-        if(valor < 0) return
-        setPuntos(valor)
-        console.log(puntosId)
-        axios.patch(`/api/puntos/update/${puntosId}`, { totales: valor })
+        event.preventDefault();
+
+        let biblia = puntosBiblia;
+        let ofrenda = puntosOfrenda;
+        let participacion = puntosParticipacion;
+
+        switch (tipoPuntos) {
+            case 'biblia':
+                biblia = biblia - cantidad;
+                if (biblia < 0) {
+                    biblia = 0;
+                }
+                break;
+            case 'ofrenda':
+                ofrenda = ofrenda - cantidad;
+                if (ofrenda < 0) {
+                    ofrenda = 0;
+                }
+                break;
+            case 'participacion':
+                participacion = participacion - cantidad;
+                if (participacion < 0) {
+                    participacion = 0;
+                }
+                break;
+        }
+
+        const puntos = {
+            biblia,
+            ofrenda,
+            participacion,
+        }
+        await axios.patch(`/api/puntos/update/${puntosId}`, puntos);
+        console.log(puntosBiblia);
+        // window.location.reload()
     }
 
 
@@ -97,17 +132,48 @@ export default function CanjeoPuntos({ params }) {
                         </div>
                         <div>
                             <label className="label">Puntos totales:</label>
-                            <span className="form-control">{puntos}</span>
+                            <span className="form-control">{puntosBiblia + puntosOfrenda + puntosParticipacion}</span>
                         </div>
+                        <div>
+                            <Select
+                                onChange={(e) => setTipoPuntos(e.target.value)}
+                                displayEmpty
+                                input={<OutlinedInput />}
+                                MenuProps={MenuProps}
+                                inputProps={{ 'aria-label': 'Without label' }}
+                                sx={{
+                                    backgroundColor: 'white',
+                                    '& .MuiSelect-select': {
+                                        backgroundColor: 'white',
+                                    },
+                                    '& .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: 'transparent',
+                                    },
+                                    '&:hover .MuiOutlinedInput-notchedOutline': {
+                                        borderColor: 'transparent',
+                                    },
+                                }}
+                            >
+                                <MenuItem value={'biblia'}>Puntos por Biblia</MenuItem>
+                                <MenuItem value={'ofrenda'}>Puntos por Ofrenda</MenuItem>
+                                <MenuItem value={'participacion'}>Puntos por participación</MenuItem>
+                            </Select>
+                        </div>
+                        <div>
+                            <label className="label">Puntos disponibles para {tipoPuntos}:</label>
+                            <span className="form-control">
+                                {tipoPuntos === 'biblia' ? puntosBiblia : tipoPuntos === 'ofrenda' ? puntosOfrenda : tipoPuntos === 'participacion' ? puntosParticipacion : 0}
+                            </span>
+                        </div>
+
                         <div className="form-group">
                             <label className="label">Cantidad a canjear:</label>
-                            <input className="form-control" type="number" value={cantidad} onChange={(e) => setCantidad(e.target.value)} />
+                            <input className="form-control" type="number" defaultValue={cantidad} onChange={(e) => setCantidad(parseInt(e.target.value))} />
                         </div>
-                        <button type="submit" className="button">Canjear puntos</button>
+                        <button type="submit" className="button">Actualizar puntos</button>
                     </form>
                 </div>
             </div>
         </div>
     );
-
 }

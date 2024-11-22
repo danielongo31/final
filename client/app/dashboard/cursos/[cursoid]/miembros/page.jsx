@@ -2,12 +2,11 @@
 
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import { Button, Container, Stack, TextField } from "@mui/material";
+import { Button, Container, Stack } from "@mui/material";
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import axios from "axios";
 import Link from 'next/link';
 import { useEffect, useState } from "react";
-import * as XLSX from 'xlsx'; 
 
 export default function MiembroPage({ params }) {
   const { cursoid } = params;
@@ -35,92 +34,84 @@ export default function MiembroPage({ params }) {
 
   const deleteMiembro = async (id) => {
     const { success } = (await axios.delete(`/api/miembro/delete/${id}`)).data;
-    if (success) window.location.reload();
+    if (success) {
+      setMiembros(miembros.filter(miembro => miembro.id !== id));
+    }
   };
 
-  const addPuntos = async () => {
-    const { success } = (await axios.post('/api/puntos/masive', {
-      ids,
-      totales: 100
-    })).data;
+  const addPuntos = async (tipo) => {
+    const puntosData = { ids, biblia: 0, ofrenda: 0, participacion: 0 };
+
     
-    if (success) window.location.reload();
+    if (tipo === 'biblia') puntosData.biblia = 100;
+    if (tipo === 'ofrenda') puntosData.ofrenda = 100;
+    if (tipo === 'participacion') puntosData.participacion = 100;
+
+    const { success } = (await axios.post('/api/puntos/masive', puntosData)).data;
+
+    if (success) {
+      
+      setMiembros(prev =>
+        prev.map(miembro => {
+          if (ids.includes(miembro.puntos.id)) {
+            miembro.puntos.biblia += puntosData.biblia;
+            miembro.puntos.ofrenda += puntosData.ofrenda;
+            miembro.puntos.participacion += puntosData.participacion;
+          }
+          return miembro;
+        })
+      );
+    }
   };
 
   const handleSetIds = (model) => {
     setIds(miembros.filter(miembro => model.includes(miembro.id)).map(miembro => miembro.puntos.id));
   };
 
-  
-  const generateReport = () => {
-    const ws = XLSX.utils.json_to_sheet(miembros.map(miembro => ({
-      Documento: miembro.documento,
-      Nombres: miembro.nombres,
-      Apellidos: miembro.apellidos,
-      Rol: miembro.rol,
-      Edad: miembro.edad,
-      Puntos: miembro.puntos.totales,
-    })));
-
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Miembros");
-
-    
-    XLSX.writeFile(wb, `Informe_Miembros_${cursoid}.xlsx`);
-  };
-
   return (
-    <Container maxWidth="xl">
-      {/* <Stack direction="row" spacing={2} padding={2}>
-        <TextField
-          label="Fecha de inicio"
-          type="date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-          InputLabelProps={{ shrink: true }}
-        />
-        <TextField
-          label="Fecha de fin"
-          type="date"
-          value={endDate}
-          onChange={(e) => setEndDate(e.target.value)}
-          InputLabelProps={{ shrink: true }}
-        />
-      </Stack> */}
-
+    <Container maxWidth="xl" style={{ marginTop: '20px' }}>
       <DataGrid
         rows={miembros}
         columns={[
+          { field: 'documento', headerName: 'Documento de identidad', width: 180 },
+          { field: 'nombres', headerName: 'Nombres', width: 130 },
+          { field: 'apellidos', headerName: 'Apellidos', width: 130 },
+          { field: 'rol', headerName: 'Rol', width: 165 },
+          { field: 'edad', headerName: 'Edad', width: 80 },
           {
-            field: 'documento',
-            headerName: 'Documento de identidad',
-            width: 180
+            field: 'biblia',
+            headerName: 'Puntos por Biblia',
+            width: 150,
+            valueGetter: (value, row, field) => {
+              return row.puntos.biblia
+            },
+            align: "center"
           },
           {
-            field: 'nombres',
-            headerName: 'Nombres',
-            width: 180
+            field: 'ofrenda',
+            headerName: 'Puntos por Ofrenda',
+            width: 150,
+            valueGetter: (value, row, field) => {
+              return row.puntos.ofrenda
+            },
+            align: "center"
           },
           {
-            field: 'apellidos',
-            headerName: 'Apellidos',
-            width: 180
-          },
-          {
-            field: 'rol',
-            headerName: 'Rol',
-            width: 180
-          },
-          {
-            field: 'edad',
-            headerName: 'Edad',
-            width: 180
+            field: 'participacion',
+            headerName: 'Puntos por Participación',
+            width: 170,
+            valueGetter: (value, row, field) => {
+              return row.puntos.participacion
+            },
+            align: "center"
           },
           {
             field: 'total',
-            headerName: 'Puntos',
-            width: 180,
-            valueGetter: (value, row) => row.puntos.totales,
+            headerName: 'Puntos Totales',
+            width: 160,
+            valueGetter: (value, row, field) => {
+              return row.puntos.biblia + row.puntos.ofrenda + row.puntos.participacion
+            },
             align: "center"
           },
           {
@@ -129,21 +120,23 @@ export default function MiembroPage({ params }) {
             width: 100,
             type: 'actions',
             getActions: ({ id }) => [
-              <GridActionsCellItem key={1}
+              <GridActionsCellItem
+                key="add"
                 icon={<AddCircleRoundedIcon />}
                 label="Add"
                 href={`/dashboard/cursos/${cursoid}/miembros/${id}`}
                 color="inherit"
                 component={Link}
               />,
-              <GridActionsCellItem key={2}
+              <GridActionsCellItem
+                key="delete"
                 icon={<DeleteRoundedIcon />}
                 label="Delete"
                 onClick={() => deleteMiembro(id)}
                 color="inherit"
               />,
-            ],
-          },
+            ]
+          }
         ]}
         initialState={{
           pagination: {
@@ -154,13 +147,11 @@ export default function MiembroPage({ params }) {
         checkboxSelection
         onRowSelectionModelChange={handleSetIds}
       />
-
       <Stack direction={"row"} spacing={3} padding={2}>
         <Link href={`/dashboard/agregar_miembros?curso=${cursoid}`} className="button">Agregar miembro</Link>
-        <Button className="button" onClick={addPuntos} variant='contained'>Agregar puntos Biblia</Button>
-        <Button className="button" onClick={addPuntos} variant='contained'>Agregar puntos Ofrenda</Button>
-        <Button className="button" onClick={addPuntos} variant='contained'>Agregar puntos Participación</Button>
-        <Button className="button" onClick={generateReport} variant='contained'>Generar Informe</Button> 
+        <Button onClick={() => addPuntos('biblia')} variant='contained'>Agregar puntos Biblia</Button>
+        <Button onClick={() => addPuntos('ofrenda')} variant='contained'>Agregar puntos Ofrenda</Button>
+        <Button onClick={() => addPuntos('participacion')} variant='contained'>Agregar puntos Participación</Button>
       </Stack>
     </Container>
   );

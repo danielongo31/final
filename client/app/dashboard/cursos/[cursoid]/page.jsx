@@ -2,36 +2,67 @@
 
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import { Container } from "@mui/material";
+import { Button, Container, Stack } from "@mui/material";
 import { DataGrid, GridActionsCellItem } from "@mui/x-data-grid";
+import * as XLSX from 'xlsx'; 
 import axios from "axios";
 import Link from 'next/link';
 import { useEffect, useState } from "react";
 
-export default function Page({
-    params
-}) {
-
+export default function Page({ params }) {
     const { cursoid } = params;
-
     const [actividades, setActividades] = useState([]);
 
     useEffect(() => {
         const getActividades = async () => {
-            const { success, result } = (await axios.get(`/api/actividades/getByCurso/${cursoid}`)).data
+            const { success, result } = (await axios.get(`/api/actividades/getByCurso/${cursoid}`)).data;
 
-            if (success) setActividades(result)
+            if (success) setActividades(result);
         };
 
         getActividades();
     }, [cursoid]);
 
     const deleteActividad = async (id) => {
-        const { success, result } = (await axios.delete(`/api/actividades/delete/${id}`)).data;
+        const { success } = (await axios.delete(`/api/actividades/delete/${id}`)).data;
 
         if (success) window.location.reload();
     };
 
+    
+    const formatDate = (isoString) => {
+        const date = new Date(isoString);
+        return date.toLocaleDateString();
+    };
+
+    
+    const exportToExcel = () => {
+        if (actividades.length === 0) return; 
+
+       
+        const formattedActividades = actividades.map((actividad) => ({
+            ...actividad,
+            fecha: formatDate(actividad.fecha),
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(formattedActividades); 
+        const keys = Object.keys(formattedActividades[0] || {}); 
+
+        
+        worksheet["!cols"] = keys.map((key) => ({
+            wch: Math.max(
+                key.length, 
+                ...formattedActividades.map((actividad) =>
+                    actividad[key] ? actividad[key].toString().length : 0
+                ) 
+            ),
+        }));
+
+        const workbook = XLSX.utils.book_new(); 
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Actividades"); 
+
+        XLSX.writeFile(workbook, `actividades_curso_${cursoid}.xlsx`);
+    };
 
     return (
         <Container
@@ -63,24 +94,22 @@ export default function Page({
                         headerName: 'Acciones',
                         width: 100,
                         type: 'actions',
-                        getActions: ({ id }) => {
-
-                            return [
-                                <GridActionsCellItem key={1}
-                                    icon={<EditRoundedIcon />}
-                                    label="Edit"
-                                    className="textPrimary"
-                                    href={`/dashboard/cursos/${cursoid}/actividades/${id}`}
-                                    color="inherit"
-                                />,
-                                <GridActionsCellItem key={2}
-                                    icon={<DeleteRoundedIcon />}
-                                    label="Delete"
-                                    onClick={() => deleteActividad(id)}
-                                    color="inherit"
-                                />,
-                            ];
-                        }
+                        getActions: ({ id }) => [
+                            <GridActionsCellItem
+                                key={1}
+                                icon={<EditRoundedIcon />}
+                                label="Edit"
+                                href={`/dashboard/cursos/${cursoid}/actividades/${id}`}
+                                color="inherit"
+                            />,
+                            <GridActionsCellItem
+                                key={2}
+                                icon={<DeleteRoundedIcon />}
+                                label="Delete"
+                                onClick={() => deleteActividad(id)}
+                                color="inherit"
+                            />,
+                        ]
                     }
                 ]}
                 initialState={{
@@ -91,10 +120,25 @@ export default function Page({
                 pageSizeOptions={[5, 10]}
                 checkboxSelection
             />
-            <Link href={`/dashboard/cursos/${cursoid}/actividades`} className="button" style={{
-                display: "block",
-                float: "left"
-            }}>Agregar actividad</Link>
+            <Stack direction={"row"} spacing={3} padding={2}>
+                <Link
+                    href={`/dashboard/cursos/${cursoid}/actividades`}
+                    className="button"
+                    style={{
+                        display: "block",
+                        float: "left"
+                    }}
+                >
+                    Agregar actividad
+                </Link>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={exportToExcel}
+                >
+                    Generar informe
+                </Button>
+            </Stack>
         </Container>
     );
 }

@@ -2,12 +2,13 @@
 
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
-import { Container } from "@mui/material";
+import { Container, Stack, Button } from "@mui/material";
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import axios from "axios";
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
+import * as XLSX from 'xlsx';
 
 export default function Home() {
   const router = useRouter();
@@ -20,7 +21,9 @@ export default function Home() {
         const { success, result } = response.data;
 
         if (success) {
-          setMiembros(result);
+
+          const miembrosFiltrados = result.map(({ permiso, puntosId, ...rest }) => rest);
+          setMiembros(miembrosFiltrados);
         } else {
           console.error("Error fetching miembros:", response.data);
         }
@@ -45,6 +48,27 @@ export default function Home() {
     }
   };
 
+
+  const exportToExcel = () => {
+    const ws = XLSX.utils.json_to_sheet(miembros);
+
+
+    const keys = Object.keys(miembros[0] || {});
+    ws["!cols"] = keys.map((key) => ({
+      wch: Math.max(
+        key.length,
+        ...miembros.map((miembro) => (miembro[key] ? miembro[key].toString().length : 0))
+      ),
+    }));
+
+
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Miembros");
+
+    XLSX.writeFile(wb, "miembros.xlsx");
+  };
+
+
   return (
     <Container maxWidth="xl" style={{ marginTop: '20px' }}>
       <DataGrid
@@ -54,8 +78,8 @@ export default function Home() {
           { field: 'documento', headerName: 'Documento de identidad', width: 200 },
           { field: 'nombres', headerName: 'Nombres', width: 200 },
           { field: 'apellidos', headerName: 'Apellidos', width: 200 },
-          { field: 'telefono', headerName: 'Telefono', width: 200 },
-          { field: 'direccion', headerName: 'Direccion', width: 200 },
+          { field: 'telefono', headerName: 'Teléfono', width: 200 },
+          { field: 'direccion', headerName: 'Dirección', width: 200 },
           {
             field: 'Actions',
             headerName: 'Acciones',
@@ -86,12 +110,24 @@ export default function Home() {
         pageSizeOptions={[5, 10]}
         checkboxSelection
       />
-      <Link href={`/dashboard/agregar_miembros`} className="button" style={{
-        display: "block",
-        float: "left"
-      }}>
-        Agregar miembro
-      </Link>
+      <Stack direction={"row"} spacing={3} padding={2}>
+        <Link href={`/dashboard/agregar_miembros`} className="button" style={{
+          display: "block",
+          float: "left"
+        }}>
+          Agregar miembro
+        </Link>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={exportToExcel}
+          style={{
+            float: "right"
+          }}
+        >
+          Generar informe
+        </Button>
+      </Stack>
     </Container>
   );
 }
