@@ -7,17 +7,27 @@ import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import axios from "axios";
 import Link from 'next/link';
 import { useEffect, useState } from "react";
+import * as XLSX from "xlsx";  
 
 export default function MiembroPage({ params }) {
   const { cursoid } = params;
 
   const [miembros, setMiembros] = useState([]);
+  const [cursoNombre, setCursoNombre] = useState('');  
   const [ids, setIds] = useState([]);
 
+ 
   useEffect(() => {
     const getMiembros = async () => {
-      let { success, result } = (await axios.get(`/api/miembro/getByCurso/${cursoid}`)).data;
+      
+      const { success, result: curso } = (await axios.get(`/api/curso/getById/${cursoid}`)).data;
       if (success) {
+        setCursoNombre(curso.nombre);  
+      }
+
+      
+      let { success: miembrosSuccess, result } = (await axios.get(`/api/miembro/getByCurso/${cursoid}`)).data;
+      if (miembrosSuccess) {
         result = await Promise.all(
           result.map(async (miembro) => {
             const { result: puntos } = (await axios.get(`/api/puntos/getById/${miembro.puntosId}`)).data;
@@ -35,14 +45,13 @@ export default function MiembroPage({ params }) {
   const deleteMiembro = async (id) => {
     const { success } = (await axios.delete(`/api/miembro/delete/${id}`)).data;
     if (success) {
-      setMiembros(miembros.filter(miembro => miembro.id !== id));
+      setMiembros(prevMiembros => prevMiembros.filter(miembro => miembro.id !== id));
     }
   };
 
   const addPuntos = async (tipo) => {
     const puntosData = { ids, biblia: 0, ofrenda: 0, participacion: 0 };
 
-    
     if (tipo === 'biblia') puntosData.biblia = 100;
     if (tipo === 'ofrenda') puntosData.ofrenda = 100;
     if (tipo === 'participacion') puntosData.participacion = 100;
@@ -50,22 +59,57 @@ export default function MiembroPage({ params }) {
     const { success } = (await axios.post('/api/puntos/masive', puntosData)).data;
 
     if (success) {
-      
-      setMiembros(prev =>
-        prev.map(miembro => {
-          if (ids.includes(miembro.puntos.id)) {
-            miembro.puntos.biblia += puntosData.biblia;
-            miembro.puntos.ofrenda += puntosData.ofrenda;
-            miembro.puntos.participacion += puntosData.participacion;
-          }
-          return miembro;
-        })
-      );
+      const { success, result } = (await axios.get(`/api/miembro/getByCurso/${cursoid}`)).data;
+      if (success) {
+        const updatedMembers = await Promise.all(
+          result.map(async (miembro) => {
+            const { result: puntos } = (await axios.get(`/api/puntos/getById/${miembro.puntosId}`)).data;
+            miembro.puntos = puntos;
+            return miembro;
+          })
+        );
+        setMiembros(updatedMembers);
+      }
     }
   };
 
   const handleSetIds = (model) => {
     setIds(miembros.filter(miembro => model.includes(miembro.id)).map(miembro => miembro.puntos.id));
+  };
+
+  
+  const exportToExcel = () => {
+    if (miembros.length === 0) return;
+
+    const formattedMiembros = miembros.map((miembro) => ({
+      documento: miembro.documento,
+      nombres: miembro.nombres,
+      apellidos: miembro.apellidos,
+      rol: miembro.rol,
+      edad: miembro.edad,
+      biblia: miembro.puntos ? miembro.puntos.biblia : 0,
+      ofrenda: miembro.puntos ? miembro.puntos.ofrenda : 0,
+      participacion: miembro.puntos ? miembro.puntos.participacion : 0,
+      total: miembro.puntos ? miembro.puntos.biblia + miembro.puntos.ofrenda + miembro.puntos.participacion : 0,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(formattedMiembros);
+    const keys = Object.keys(formattedMiembros[0] || {});
+
+    worksheet["!cols"] = keys.map((key) => ({
+      wch: Math.max(
+        key.length,
+        ...formattedMiembros.map((miembro) =>
+          miembro[key] ? miembro[key].toString().length : 0
+        )
+      ),
+    }));
+
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Miembros");
+
+    
+    XLSX.writeFile(workbook, `Lista_curso_${cursoNombre}.xlsx`);
   };
 
   return (
@@ -82,8 +126,8 @@ export default function MiembroPage({ params }) {
             field: 'biblia',
             headerName: 'Puntos por Biblia',
             width: 150,
-            valueGetter: (value, row, field) => {
-              return row.puntos.biblia
+            valueGetter: (value, row) => {
+              return row.puntos ? row.puntos.biblia : 0;
             },
             align: "center"
           },
@@ -91,8 +135,8 @@ export default function MiembroPage({ params }) {
             field: 'ofrenda',
             headerName: 'Puntos por Ofrenda',
             width: 150,
-            valueGetter: (value, row, field) => {
-              return row.puntos.ofrenda
+            valueGetter: (value, row) => {
+              return row.puntos ? row.puntos.ofrenda : 0;
             },
             align: "center"
           },
@@ -100,8 +144,8 @@ export default function MiembroPage({ params }) {
             field: 'participacion',
             headerName: 'Puntos por Participación',
             width: 170,
-            valueGetter: (value, row, field) => {
-              return row.puntos.participacion
+            valueGetter: (value, row) => {
+              return row.puntos ? row.puntos.participacion : 0;
             },
             align: "center"
           },
@@ -109,8 +153,8 @@ export default function MiembroPage({ params }) {
             field: 'total',
             headerName: 'Puntos Totales',
             width: 160,
-            valueGetter: (value, row, field) => {
-              return row.puntos.biblia + row.puntos.ofrenda + row.puntos.participacion
+            valueGetter: (value, row) => {
+              return row.puntos ? row.puntos.biblia + row.puntos.ofrenda + row.puntos.participacion : 0;
             },
             align: "center"
           },
@@ -152,6 +196,7 @@ export default function MiembroPage({ params }) {
         <Button onClick={() => addPuntos('biblia')} variant='contained'>Agregar puntos Biblia</Button>
         <Button onClick={() => addPuntos('ofrenda')} variant='contained'>Agregar puntos Ofrenda</Button>
         <Button onClick={() => addPuntos('participacion')} variant='contained'>Agregar puntos Participación</Button>
+        <Button onClick={exportToExcel} variant='contained' color="primary">Exportar a Excel</Button>
       </Stack>
     </Container>
   );

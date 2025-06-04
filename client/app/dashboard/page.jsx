@@ -37,7 +37,7 @@ export default function CursosPage() {
                   >
                       <CardActionArea
                           component={Link}
-                          href={`/cursos/${curso.id}`}
+                          href={`/dashboard/cursos/${curso.id}`}
                       >
                           <CardMedia
                               component="img"

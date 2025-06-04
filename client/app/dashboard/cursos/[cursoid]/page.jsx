@@ -12,12 +12,24 @@ import { useEffect, useState } from "react";
 export default function Page({ params }) {
     const { cursoid } = params;
     const [actividades, setActividades] = useState([]);
+    const [cursoNombre, setCursoNombre] = useState('');  // Estado para el nombre del curso
 
     useEffect(() => {
         const getActividades = async () => {
-            const { success, result } = (await axios.get(`/api/actividades/getByCurso/${cursoid}`)).data;
+            try {
+                // Obtener el nombre del curso
+                const { success: cursoSuccess, result: curso } = (await axios.get(`/api/curso/getById/${cursoid}`)).data;
+                if (cursoSuccess) {
+                    setCursoNombre(curso.nombre);  // Guardar el nombre del curso
+                }
 
-            if (success) setActividades(result);
+                // Obtener las actividades
+                const { success, result } = (await axios.get(`/api/actividades/getByCurso/${cursoid}`)).data;
+                if (success) setActividades(result);
+            } catch (error) {
+                console.error("Error al obtener los datos:", error);
+                alert("Hubo un problema al obtener los datos del curso.");
+            }
         };
 
         getActividades();
@@ -29,17 +41,14 @@ export default function Page({ params }) {
         if (success) window.location.reload();
     };
 
-    
     const formatDate = (isoString) => {
         const date = new Date(isoString);
         return date.toLocaleDateString();
     };
 
-    
     const exportToExcel = () => {
         if (actividades.length === 0) return; 
 
-       
         const formattedActividades = actividades.map((actividad) => ({
             ...actividad,
             fecha: formatDate(actividad.fecha),
@@ -48,7 +57,6 @@ export default function Page({ params }) {
         const worksheet = XLSX.utils.json_to_sheet(formattedActividades); 
         const keys = Object.keys(formattedActividades[0] || {}); 
 
-        
         worksheet["!cols"] = keys.map((key) => ({
             wch: Math.max(
                 key.length, 
@@ -61,7 +69,7 @@ export default function Page({ params }) {
         const workbook = XLSX.utils.book_new(); 
         XLSX.utils.book_append_sheet(workbook, worksheet, "Actividades"); 
 
-        XLSX.writeFile(workbook, `actividades_curso_${cursoid}.xlsx`);
+        XLSX.writeFile(workbook, `actividades_curso_${cursoNombre}.xlsx`);
     };
 
     return (
@@ -69,6 +77,8 @@ export default function Page({ params }) {
             maxWidth="xl"
             style={{ marginTop: '20px' }}
         >
+            
+
             <DataGrid
                 rows={actividades}
                 columns={[
@@ -136,7 +146,7 @@ export default function Page({ params }) {
                     color="primary"
                     onClick={exportToExcel}
                 >
-                    Generar informe
+                    Descargar lista de actividades
                 </Button>
             </Stack>
         </Container>

@@ -88,7 +88,7 @@ export default function CanjeoPuntos({ params }) {
         }
         await axios.patch(`/api/puntos/update/${puntosId}`, puntos);
         console.log(puntosBiblia);
-        // window.location.reload()
+        window.location.reload()
     }
 
 
@@ -170,7 +170,7 @@ export default function CanjeoPuntos({ params }) {
                             <label className="label">Cantidad a canjear:</label>
                             <input className="form-control" type="number" defaultValue={cantidad} onChange={(e) => setCantidad(parseInt(e.target.value))} />
                         </div>
-                        <button type="submit" className="button">Actualizar puntos</button>
+                        <button type="submit" className="button">Canjear puntos</button>
                     </form>
                 </div>
             </div>
